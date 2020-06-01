@@ -8,8 +8,93 @@ from .forms import UserProfileForm , UserForm
 from django.contrib.auth.models import User
 # Create your views here.
 from django import template
+from django.contrib.auth.decorators import login_required
+
 
 register = template.Library()
+
+#--------------------------------------------------- Account -------------------------------------------------
+
+def index(request):
+
+    return render(request, 'app/index.html')
+
+
+def loginView(request):
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return redirect('app:index')
+            else:
+                return render(request, 'app/account/login.html', {'error_message': 'Your account has been disabled'})
+        else:
+            return render(request, 'app/account/login.html', {'error_message': 'Invalid login'})
+    return render(request, 'app/account/login.html')
+
+def Register(request):
+    form = UserForm(request.POST or None)
+    if form.is_valid():
+        user = form.save(commit=False)
+        username = form.cleaned_data['username']
+        password = form.cleaned_data['password']
+        user.set_password(password)
+        user.save()
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return redirect('app:edit-profile')
+               
+    context = {
+        "form": form,
+    }
+    return render(request, 'app/account/register.html', context)
+
+
+
+@login_required
+def editProfile(request):
+    if not request.user.is_authenticated:
+        return redirect('app:index')
+
+    form = UserProfileForm()
+    if request.POST:
+        form = UserProfileForm(request.POST or None, request.FILES or None)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.user = request.user
+            obj.save()
+            form = UserProfileForm()
+            return redirect('app:profile')
+
+    return render(request, 'app/edit_profile.html', {'form':form})
+
+def logoutView(request):
+    logout(request)
+    return redirect('app:index')
+
+def profile(request):
+    try:
+        profile = get_object_or_404(UserProfile,user=request.user)
+    except :
+        redirect('app/edit_profile.html')
+    profile1 = profile
+    l=[]
+    try:
+        friends = Friends.objects.all().filter(user=profile,confirmed=True)
+    except :
+        friends = None
+    for friend in friends :
+        profile = get_object_or_404(UserProfile,user=friend.friend)
+        l.append((friend,profile))
+
+    return render(request, 'app/profile.html',{'all_friends':l,'profile':profile1})
+
+#---------------------------------------- NavBar methodes -----------------------------------------------
 
 def messages(request):
     messages = Messages.objects.all()
@@ -47,69 +132,16 @@ def addfriend(request,id):
     obj.save()
     return render(request, 'app/members.html')
 
-#--------------------------------------------------- Account -------------------------------------------------
-
-def index(request):
-
-    return render(request, 'app/index.html')
-def profile(request):
-    try:
-        profile = get_object_or_404(UserProfile,user=request.user)
-    except :
-        redirect('app/edit_profile.html')
-    friends="fuck"
-    return render(request, 'app/profile.html',{'all_friends':friends,'profile':profile})
-
-
-def loginView(request):
-    if request.method == "POST":
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.is_active:
-                login(request, user)
-                return redirect('app:index')
-            else:
-                return render(request, 'app/account/login.html', {'error_message': 'Your account has been disabled'})
-        else:
-            return render(request, 'app/account/login.html', {'error_message': 'Invalid login'})
-    return render(request, 'app/account/login.html')
-
-def Register(request):
-    form = UserForm(request.POST or None)
-    if form.is_valid():
-        user = form.save(commit=False)
-        username = form.cleaned_data['username']
-        password = form.cleaned_data['password']
-        user.set_password(password)
-        user.save()
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.is_active:
-                login(request, user)
-                return redirect('app:edit-profile')
-               
-    context = {
-        "form": form,
-    }
-    return render(request, 'app/account/register.html', context)
-
-def logoutView(request):
-    logout(request)
-    return redirect('app:index')
-def editProfile(request):
+def confirmfriend(request,id):
     if not request.user.is_authenticated:
         return redirect('app:index')
+    friend = get_object_or_404(User,id=id)
+    print('1------------- ',friend)
+    profile = get_object_or_404(UserProfile,user=request.user)
+    print('2------------- ',profile)
+    obj = Friends.objects.get(user=profile,friend=friend)
 
-    form = UserProfileForm()
-    if request.POST:
-        form = UserProfileForm(request.POST or None, request.FILES or None)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.user = request.user
-            obj.save()
-            form = UserProfileForm()
-            return redirect('app:profile')
-
-    return render(request, 'app/edit_profile.html', {'form':form})
+    print('è------------- ',obj)
+    obj.confirmed = True
+    obj.save()
+    return render(request, 'app/members.html')

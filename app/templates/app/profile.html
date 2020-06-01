@@ -44,9 +44,66 @@
         </a>
     </div>
 </div>
-{% for friend in all_friends %}
-  {{friend.name}}
-{% endfor %}
+{% if all_friends %}
+            {% for friend in all_friends %}   
+                            <div class="col-sm-7 col-lg-3">
+
+                                <div class="card hovercard">
+                                    <div class="cardheader">
+
+                                    </div>
+                                    <div class="avatar">
+                                        <img id="{{friend.0.id}}" alt="{{friend.0.username}}" src="{{ friend.1.profilePicture.url }}">
+                                    </div>
+                                    <div class="info">
+                                        <div class="title">
+                                            <a href="#">{{friend.0.username}}</a>
+                                        </div>
+                                        <div class="desc">{{friend.1.bio}}</div>
+                                      
+                                    </div>
+                                    <div class="bottom">
+                                        <a class="btn btn-success  btn-md" href="{% url 'app:confirm-request' friend.1.user.id %}">
+                                           messages
+                                        </a>
+    
+                                    </div>
+                                </div>
+
+                    </div>
+                    <!-- The Modal -->
+                    <div id="myModal" class="modal">
+                    <span class="close">&times;</span>
+                    <img class="modal-content" id="img01">
+                    <div id="caption"></div>
+                    </div>
+
+                    <script>
+                    // Get the modal
+                    var modal = document.getElementById('myModal');
+
+                    // Get the image and insert it inside the modal - use its "alt" text as a caption
+                    var img = document.getElementById('{{user_p.0.id}}');
+                    var modalImg = document.getElementById("img01");
+                    var captionText = document.getElementById("caption");
+                    img.onclick = function(){
+                    modal.style.display = "block";
+                    modalImg.src = this.src;
+                    captionText.innerHTML = this.alt;
+                    }
+
+                    // Get the <span> element that closes the modal
+                    var span = document.getElementsByClassName("close")[0];
+
+                    // When the user clicks on <span> (x), close the modal
+                    span.onclick = function() { 
+                        modal.style.display = "none";
+                    }
+                    </script>
+                  
+                {% endfor %}    
+        {% endif %}
+
 <p>
     bla bla
 </p>
