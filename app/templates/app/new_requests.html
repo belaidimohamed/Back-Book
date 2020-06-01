@@ -37,10 +37,18 @@
                                       
                                     </div>
                                     <div class="bottom">
+                                        {% if friend.0.accepted == False %}
                                         <a class="btn btn-success  btn-md" href="{% url 'app:confirm-request' friend.1.user.id %}">
                                            Confirm invitation
                                         </a>
-    
+                                        {% endif %}
+                                        {% if friend.0.accepted == True %}
+                                        <span style="color: green;">invitation accepted</span><br>
+                                        <a class="btn btn-success  btn-md" href="{% url 'app:ok-request' friend.1.user.id %}">
+                                            ok
+                                         </a>
+                                        {% endif %}
+                                        
                                     </div>
                                 </div>
 

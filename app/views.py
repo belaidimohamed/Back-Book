@@ -56,7 +56,6 @@ def Register(request):
 
 
 
-@login_required
 def editProfile(request):
     if not request.user.is_authenticated:
         return redirect('app:index')
@@ -72,7 +71,8 @@ def editProfile(request):
             return redirect('app:profile')
 
     return render(request, 'app/edit_profile.html', {'form':form})
-
+    
+@login_required
 def logoutView(request):
     logout(request)
     return redirect('app:index')
@@ -107,41 +107,70 @@ def newRequest(request):
 def members(request):
     profile = get_object_or_404(UserProfile,user=request.user)
     print(profile)
+    list_of_friends=[]
     try:
         friends = Friends.objects.all().filter(user=profile)
+        for friend in friends:
+            list_of_friends.append(friend.friend)
     except :
         friends = None
     users = User.objects.all()
     l=[]
     for user in users :
-        profile = get_object_or_404(UserProfile,user=user)
-        l.append((user,profile))
+        if user!=request.user:
+            if user in list_of_friends :
+                print('fuck') 
+                continue
+            else :
+                try:
+                    profile = UserProfile.objects.get(user=user)
+                    l.append((user,profile))
+                except:
+                    continue
+            
 
-    return render(request, 'app/members.html',{'users_p':l,'friends':friends})
+    return render(request, 'app/members.html',{'users_p':l})
 
 def addfriend(request,id):
-    if not request.user.is_authenticated:
-        return redirect('app:index')
+  
     friend = get_object_or_404(User,id=id)
-    print('è------------- ',friend)
-    profile = get_object_or_404(UserProfile,user=friend)
+    profile = get_object_or_404(UserProfile,user=friend) #adding friend (not confirmed) to the target
     obj = Friends()
     obj.user = profile
     obj.friend = request.user
     obj.confirmed = False
     obj.save()
+
+    profile = get_object_or_404(UserProfile,user=request.user) #adding friend (not confirmed) to the requester
+    obj1= Friends() 
+    obj1.user = profile
+    obj1.friend = friend
+    obj1.confirmed = False
+    obj1.Isent = True 
+    obj1.save()
     return render(request, 'app/members.html')
 
 def confirmfriend(request,id):
-    if not request.user.is_authenticated:
-        return redirect('app:index')
+  
     friend = get_object_or_404(User,id=id)
-    print('1------------- ',friend)
     profile = get_object_or_404(UserProfile,user=request.user)
-    print('2------------- ',profile)
     obj = Friends.objects.get(user=profile,friend=friend)
-
-    print('è------------- ',obj)
     obj.confirmed = True
+    obj.save()
+
+    profile = get_object_or_404(UserProfile,user=friend)
+    obj1 = Friends.objects.get(user=profile,friend=request.user)
+    obj1.confirmed = True
+    obj1.Isent = False
+    obj1.accepted = True
+    obj1.save()
+
+    return render(request, 'app/members.html')
+def ok(request,id):
+
+    friend = get_object_or_404(User,id=id)
+    profile = get_object_or_404(UserProfile,user=request.user)
+    obj = Friends.objects.get(user=profile,friend=friend)
+    obj.accepted = False
     obj.save()
     return render(request, 'app/members.html')

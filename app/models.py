@@ -21,5 +21,7 @@ class Friends(models.Model):
     friend = models.ForeignKey(User,on_delete=models.CASCADE,default=None,unique=True)
     messages= models.OneToOneField(Messages, on_delete=models.CASCADE ,null=True)
     confirmed = models.BooleanField(default=False)
+    Isent = models.BooleanField(default=False)
+    accepted = models.BooleanField(default=False)
     def __str__(self):
         return self.friend.username 

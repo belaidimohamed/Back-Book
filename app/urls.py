@@ -12,6 +12,7 @@ urlpatterns = [
     path('logout/',views.logoutView,name="logout"),
     path('add/<int:id>',views.addfriend,name="add-friend"),
     path('newRequest/',views.newRequest,name="new-request"),
-     path('confirmRequest/<int:id>',views.confirmfriend,name="confirm-request"),
+    path('confirmRequest/<int:id>',views.confirmfriend,name="confirm-request"),
+    path('ok/<int:id>',views.ok,name="ok-request"),
 
 ]
