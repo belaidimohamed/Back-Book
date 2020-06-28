@@ -96,10 +96,27 @@ def profile(request):
 
 #---------------------------------------- NavBar methodes -----------------------------------------------
 
-def messages(request):
-    messages = Messages.objects.all()
 
-    return render(request, 'app/messages.html')
+def messages(request ,id):
+    
+    profile = get_object_or_404(UserProfile,user=request.user)
+    l=[]
+    try:
+        friends = Friends.objects.all().filter(user=profile,confirmed=True)
+    except :
+        friends = None
+    for friend in friends :
+        profile = get_object_or_404(UserProfile,user=friend.friend)
+        l.append((friend,profile))
+    print(id)
+    if id != 0:
+        friend = Friends.objects.get(id=id,confirmed=True)
+        profile = get_object_or_404(UserProfile,user=friend.friend)
+        print(friend.messages)
+    else :
+        friend = None
+    return render(request, 'app/messages.html',{'Mfriends':l,'friend':(friend,profile)})
+
 def newRequest(request):
     
     return render(request, 'app/new_requests.html')
