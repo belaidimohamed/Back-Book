@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.views.generic import CreateView , UpdateView , DeleteView , View , DetailView , ListView
 from django.urls import reverse_lazy
 from .models import Friends , Messages , UserProfile
-from .forms import UserProfileForm , UserForm , MessageForm
+from .forms import UserProfileForm , UserForm
 from django.contrib.auth.models import User
 # Create your views here.
 from django import template
