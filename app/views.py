@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.views.generic import CreateView , UpdateView , DeleteView , View , DetailView , ListView
 from django.urls import reverse_lazy
 from .models import Friends , Messages , UserProfile
-from .forms import UserProfileForm , UserForm
+from .forms import UserProfileForm , UserForm , MessageForm
 from django.contrib.auth.models import User
 # Create your views here.
 from django import template
@@ -71,7 +71,9 @@ def editProfile(request):
             return redirect('app:profile')
 
     return render(request, 'app/edit_profile.html', {'form':form})
-    
+
+
+
 @login_required
 def logoutView(request):
     logout(request)
@@ -95,10 +97,8 @@ def profile(request):
     return render(request, 'app/profile.html',{'all_friends':l,'profile':profile1})
 
 #---------------------------------------- NavBar methodes -----------------------------------------------
-
-
-def messages(request ,id):
-    
+def sendMessage(request,id):
+    print('i am here')
     profile = get_object_or_404(UserProfile,user=request.user)
     l=[]
     try:
@@ -108,14 +108,28 @@ def messages(request ,id):
     for friend in friends :
         profile = get_object_or_404(UserProfile,user=friend.friend)
         l.append((friend,profile))
-    print(id)
-    if id != 0:
-        friend = Friends.objects.get(id=id,confirmed=True)
+
+    friend = Friends.objects.get(id=id,confirmed=True)
+    profile = get_object_or_404(UserProfile,user=friend.friend)
+    print(friend.messages)
+    #................................
+    if request.POST :
+        msg = request.POST['message']
+        print(msg)
+    return render(request, 'app/messageSend.html',{'Mfriends':l,'friend':(friend,profile),'id':id}) 
+    
+def messages(request):
+    profile = get_object_or_404(UserProfile,user=request.user)
+    l=[]
+    try:
+        friends = Friends.objects.all().filter(user=profile,confirmed=True)
+    except :
+        friends = None
+    for friend in friends :
         profile = get_object_or_404(UserProfile,user=friend.friend)
-        print(friend.messages)
-    else :
-        friend = None
-    return render(request, 'app/messages.html',{'Mfriends':l,'friend':(friend,profile)})
+        l.append((friend,profile))
+
+    return render(request, 'app/messages.html',{'Mfriends':l})
 
 def newRequest(request):
     

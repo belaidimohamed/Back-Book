@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django import forms
-from .models import UserProfile , Friends
+from .models import UserProfile , Friends , Messages
 from django.core.files.images import get_image_dimensions
 
 

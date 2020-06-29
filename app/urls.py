@@ -13,7 +13,8 @@ urlpatterns = [
     path('newRequest/',views.newRequest,name="new-request"),
     path('confirmRequest/<int:id>',views.confirmfriend,name="confirm-request"),
     path('ok/<int:id>',views.ok,name="ok-request"),
-    path('messages/<int:id>',views.messages,name="msg"),
+    path('messages/',views.messages,name="msg"),
+    path('sendMessage/<int:id>',views.sendMessage,name="msg_send"),
 
 
 ]
