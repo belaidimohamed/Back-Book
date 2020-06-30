@@ -5,7 +5,10 @@ from .models import Friends , Messages , UserProfile
 def notification(request):
     if not request.user.is_authenticated:
         return {}
-    profile = get_object_or_404(UserProfile,user=request.user)
+    try :
+        profile = get_object_or_404(UserProfile,user=request.user)
+    except :
+        profile=None
     l=[]
     try:
         friends = Friends.objects.all().filter(user=profile,confirmed=False,Isent=False)

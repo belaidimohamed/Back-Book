@@ -59,7 +59,6 @@ def Register(request):
 def editProfile(request):
     if not request.user.is_authenticated:
         return redirect('app:index')
-
     form = UserProfileForm()
     if request.POST:
         form = UserProfileForm(request.POST or None, request.FILES or None)
@@ -83,7 +82,7 @@ def profile(request):
     try:
         profile = get_object_or_404(UserProfile,user=request.user)
     except :
-        redirect('app/edit_profile.html')
+        profile=None
     profile1 = profile
     l=[]
     try:
@@ -99,10 +98,11 @@ def profile(request):
 #---------------------------------------- NavBar methodes -----------------------------------------------
 def sendMessage(request,id):
     print('i am here')
-    profile = get_object_or_404(UserProfile,user=request.user)
+    myprofile = get_object_or_404(UserProfile,user=request.user)
     l=[]
+    
     try:
-        friends = Friends.objects.all().filter(user=profile,confirmed=True)
+        friends = Friends.objects.all().filter(user=myprofile,confirmed=True)
     except :
         friends = None
     for friend in friends :
@@ -111,12 +111,23 @@ def sendMessage(request,id):
 
     friend = Friends.objects.get(id=id,confirmed=True)
     profile = get_object_or_404(UserProfile,user=friend.friend)
-    print(friend.messages)
-    #................................
+
     if request.POST :
         msg = request.POST['message']
-        print(msg)
-    return render(request, 'app/messageSend.html',{'Mfriends':l,'friend':(friend,profile),'id':id}) 
+        obj = Messages()
+        obj.message = msg
+        obj.user = myprofile
+        obj.friend = friend.friend
+        obj.save()
+    k1=[]
+    messages = Messages.objects.all().filter(user=myprofile,friend=friend.friend).order_by('timeSent') | Messages.objects.all().filter(user=profile,friend=request.user).order_by('timeSent')
+    for message in messages :
+        if (message.user == myprofile) :
+            k1.append((message,True))
+        else:
+            k1.append((message,False))
+
+    return render(request, 'app/messageSend.html',{'Mfriends':l,'friend':(friend,profile,k1),'id':id}) 
     
 def messages(request):
     profile = get_object_or_404(UserProfile,user=request.user)
