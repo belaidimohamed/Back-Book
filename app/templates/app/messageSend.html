@@ -79,7 +79,7 @@
                                     {{message.0.message}}
                                     
                                 </div>
-                                <span class="msg_time_send">{{message.0.timeSent}}</span>
+                                <span class="msg_time_send">{{message.0.timeSent }}</span>
                             </div>
                             {% endif %}	
                         {% endfor %}
@@ -87,9 +87,10 @@
                     <div class="card-footer">
                         <form class="form-horizontal" role="form" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
-                            <button class="attach_btn" ><i class="fas fa-paperclip"></i></button>
-                            <input name="message" type="text" class="form-control type_msg" placeholder="Type your message..." >
-                            <button class="send_btn" ><a href="{% url 'app:msg_send' id %}" ><i class="fas fa-location-arrow">Send{{id}}</i></a></button>
+                            <div class="row">
+                            <textarea name="message" type="text" class="type_msg col-md-8" placeholder="Type your message..." ></textarea>
+                            <button class="send_btn col-md-1" ><a href="{% url 'app:msg_send' id %}" ><i class="fas fa-location-arrow"></i></a></button>
+                            </div>
                         </form>
                     </div>
                    
