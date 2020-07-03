@@ -21,7 +21,7 @@ class Messages(models.Model):
         return str(self.timeSent)+' - '+self.message
 class Friends(models.Model):
     user = models.ForeignKey(UserProfile,on_delete=models.CASCADE,default=None)
-    friend = models.ForeignKey(User,on_delete=models.CASCADE,default=None,unique=True)
+    friend = models.ForeignKey(User,on_delete=models.CASCADE,default=None)
     confirmed = models.BooleanField(default=False)
     Isent = models.BooleanField(default=False)
     accepted = models.BooleanField(default=False)
