@@ -18,7 +18,7 @@ class Messages(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE,default=None)
     friend = models.ForeignKey(User, on_delete=models.CASCADE,default=None)
     def __str__(self):
-        return str(self.user)+' --> '+str(self.friend) +' : '+self.message
+        return str(self.user.user)+' - '+str(self.friend.friend) +' ==> '+self.message
 class Friends(models.Model):
     user = models.ForeignKey(UserProfile,on_delete=models.CASCADE,default=None)
     friend = models.ForeignKey(User,on_delete=models.CASCADE,default=None)
