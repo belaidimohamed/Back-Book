@@ -1,0 +1,85 @@
+.forum-box-add{
+    height: 200px;
+    width: 200px;
+    background-color: rgb(0,0,0,0.5);
+    text-align: center;
+}
+.forum-box{
+  height: 250px;
+  width: 250px;
+  background-color: rgb(0,0,0,0.3);
+  text-align: center;
+  padding:8px;
+  margin-top: 25px;
+  position:relative;
+}
+h2{
+  color: rgb(205, 190, 50);
+  font-family: cursive;
+  font-weight: bold;
+}
+#wost{
+  width: 190px;
+  padding:10px;
+
+  background-color: rgba(0, 0, 0, 0.466);
+  margin: 20px;
+  color:rgba(245, 245, 245, 0.767);
+  float:left !important ;
+  font-size:13px;
+}
+#prefoot{
+  position:absolute;
+  left: 90px;
+  bottom:48px;
+}
+#foot{
+  bottom: 0px;
+  left: 70px;
+  position:absolute;
+}
+
+
+.gi-5x{
+    margin-left: 6px;
+    font-size: 150px;
+    color: rgb(128, 170, 175);
+}
+.box-add-text{
+    margin-top: 4px;
+    color: rgb(128, 255, 0, 0.801);
+    cursor: pointer;
+}
+.box-add-text:hover {
+    color: rgba(9, 255, 0, 0.781);
+}
+.modal-header, h4, .close {
+    background-color: rgb(112, 110, 218);
+    color:white !important;
+    text-align: center;
+    font-size: 30px;
+  }
+  .modal-footer {
+    background-color: #f9f9f9;
+  }
+/* Hide the toggle checkbox */
+#expand-toggle {
+    display: none;
+  }
+  
+#myDIV{display: none;}
+  /* Style the button */
+  #expand-btn {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 5px 11px;
+    background-color: #ff7;
+    border: 1px solid;
+    border-radius: 3px;
+  }
+  
+
+  /* Style the button when the checkbox is checked */
+  #expand-toggle:checked ~ #expand-btn {
+    background-color: #ccc;
+  }

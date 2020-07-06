@@ -41,11 +41,15 @@
         <ul class="nav navbar-nav">
           <li class="">
             <a href="{% url 'app:members' %}">
-              <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>&nbsp; members</a>
+              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; add friend</a>
           </li>
           <li class="">
             <a href="{% url 'app:msg' %}">
-              <span class="glyphicon glyphicon-app" aria-hidden="true"></span>&nbsp; messages</a>
+              <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp; messages</a>
+          </li>
+          <li class="">
+            <a href="{% url 'app:forums' %}">
+              <span class="glyphicon glyphicon-th" aria-hidden="true"></span>&nbsp; forums </a>
           </li>
           {% if friends  %}
             <li class="">

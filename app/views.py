@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
 from django.views.generic import CreateView , UpdateView , DeleteView , View , DetailView , ListView
 from django.urls import reverse_lazy
-from .models import Friends , Messages , UserProfile
+from .models import Friends , Messages , UserProfile , Forum , Groupp
 from .forms import UserProfileForm , UserForm
 from django.contrib.auth.models import User
 # Create your views here.
@@ -141,6 +141,35 @@ def messages(request):
         l.append((friend,profile))
 
     return render(request, 'app/messages.html',{'Mfriends':l})
+
+def createForum(request):
+    myprofile = get_object_or_404(UserProfile,user=request.user)
+    grp = Groupp()
+    grp.user = myprofile
+    grp.comment = "--------------------  Welcome ! -----------------------" 
+    grp.save()
+
+    obj = Forum()
+    obj.user = myprofile
+    obj.name = request.POST['group_name']
+    obj.description = request.POST['descr']
+    obj.group = grp
+    access = request.POST.getlist('access')
+    if len(access)>0 : 
+        obj.private = True
+        obj.password = request.POST['psw']
+    obj.save()
+
+def forums(request):
+    if request.POST :
+        createForum(request)
+    forums = Forum.objects.all()
+    print(forums)
+    return render(request, 'app/forums.html',{'forums':forums})
+
+def groupe(request,id):
+    
+    return render(request, 'app/group.html')
 
 def newRequest(request):
     

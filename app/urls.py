@@ -15,6 +15,8 @@ urlpatterns = [
     path('ok/<int:id>',views.ok,name="ok-request"),
     path('messages/',views.messages,name="msg"),
     path('sendMessage/<int:id>',views.sendMessage,name="msg_send"),
-
+    path('forums/',views.forums,name="forums"),
+    path('forums/<int:id>',views.groupe,name="join-group"),
+ 
 
 ]

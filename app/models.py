@@ -27,3 +27,20 @@ class Friends(models.Model):
     accepted = models.BooleanField(default=False)
     def __str__(self):
         return self.friend.username 
+
+class Groupp(models.Model):
+    comment = models.TextField()
+    timeSent = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(UserProfile,on_delete=models.CASCADE,default=None)
+    def __str__(self):
+        return str(self.user.user.username)+ " : " + self.comment
+
+class Forum(models.Model):
+    user = models.ForeignKey(UserProfile,on_delete=models.CASCADE,default=None)
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=250)
+    private = models.BooleanField(default=False)
+    password = models.CharField(null=True ,max_length=50)
+    group = models.ForeignKey(Groupp , on_delete=models.CASCADE)
+    def __str__(self):
+        return str(self.user.user.username)+ " : " + self.name
