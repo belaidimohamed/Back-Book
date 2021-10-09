@@ -9,17 +9,18 @@
   {% load static %}
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
   <link href="https://fonts.googleapis.com/css?family=Satisfy" rel="stylesheet" type="text/css" />
-  <link rel="stylesheet" type="text/css" href="{% static 'app/index_style.css' %}" />
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="{% static 'app/index_style.css' %}" />
+
   {% block head %}
     
   {% endblock head %}
 </head>
 
 <body>
-  <nav class="navbar navbar-inverse">
+  <nav class="navbar navbar-inverse" style="font-size:19px;min-height: 60px;">
     <!-- inverse make it black   -->
     <div class="container-fluid">
       <!-- ???   -->
@@ -32,7 +33,7 @@
           <!-- those are lines -->
           <span class="icon-bar"></span>
         </button>
-        <a  class="navbar-brand" href="{% url 'app:index' %}"> Back Book </a>
+        <a  class="navbar-brand" style="font-size:30px;margin-top: 5px;" href="{% url 'app:index' %}"> Back Book </a>
       </div>
 
       {% if user.is_authenticated %}
@@ -72,7 +73,7 @@
           {% if user.is_authenticated %}
           
           <li class="">
-            <a class="btn btn-dark" href="{% url 'app:profile' %}" role="button" id="dropdownMenuLink" data-toggle="dropdown">
+            <a class="btn btn-dark" href="{% url 'app:profile' %}" role="button" id="dropdownMenuLink" data-toggle="dropdown" style="font-size:19px">
               <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp; Welcome {{user.username}}
             </a>
          

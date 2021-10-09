@@ -18,5 +18,7 @@ urlpatterns = [
     path('forums/',views.forums,name="forums"),
     path('forums/<int:id>',views.groupe,name="join-group"),
  
+    path('about/',views.about ,name="about"),
+    
 
 ]

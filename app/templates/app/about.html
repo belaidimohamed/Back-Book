@@ -1,0 +1,56 @@
+{% extends 'app/base.html'%}
+{% block body %}
+
+<div  class="all">
+  <h2 style="color:black">Welcome to BackBooK</h2> <br>
+    <p class="text">
+      Like any new passionate programmer, who has just learned a powerful framework like Django. 
+        A lot of scenarios and ideas for new projects started to rush through my mind.
+      Back Book was one of those projects to be precise the second after the music website "Viber".
+    </p>
+    <p class="text">
+      At that time, facebook was changing its design from classic to a new one, a change that I didn't like.
+      So I wondered why not create a whole new facebook just for me and my friends. Then I started to work on it. 
+    </p>
+    <p class="text">
+      This was only built with django 2.2 because I still haven't learned yet  the front-end, nor the API technologies.
+    </p>
+    <hr>
+    <p class="gras">
+      This site is certainly not finished yet. 
+      Because I had a lot of new technology to learn, ideas to execute, and college education to follow. 
+      I hope to finish it one day :D
+    </p>
+    <hr>
+</div>
+<style>
+  .all{
+    margin-top: 100px;
+    text-align: center;
+    background-color: rgba(128, 128, 128, 0.563);
+    padding: 50px;
+    border-radius: 25px;
+    width: 72%;
+    margin-left: 12%;
+
+  }
+  .gras {
+    font-style: italic;
+    color: white;
+    font-size: 25px;
+    margin-left: 12%;
+    margin-right: 10%;
+    text-align: left;
+    text-indent: 50px;
+  }
+  .text{
+    font-size: 25px;
+    margin-left: 12%;
+    margin-right: 10%;
+    text-align: left;
+    color: white;
+    text-indent: 50px;
+  }
+</style>
+
+{% endblock body %}
